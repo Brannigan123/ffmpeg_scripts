@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+videofile="$HOME/Videos/$(date +%Y_%m_%d_%H:%M:%S:%N_%Z).mp4"
+slop=$(slop -f "%x %y %w %h %g %i") || exit 1
+read -r X Y W H G ID <<< $slop
+ffmpeg -f pulse -ac 2  -i 0 -f x11grab -y -framerate 20 -s "$W"x"$H" -i :0.0+$X,$Y -pix_fmt yuv420p -c:v libx264 -preset superfast -crf 18 -vf "pad=ceil(iw/2)*2:ceil(ih/2)*2" $videofile

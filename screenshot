@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+imagefile="$HOME/Pictures/$(date +%Y_%m_%d_%H:%M:%S:%N_%Z).png"
+slop=$(slop -f "%x %y %w %h %g %i") || exit 1
+read -r X Y W H G ID <<< $slop
+ffmpeg -f x11grab -s "$W"x"$H" -i :0.0+$X,$Y -frames:v 1 -update true -y $imagefile
